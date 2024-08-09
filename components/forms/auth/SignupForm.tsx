@@ -23,21 +23,24 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 
 export default function SignupForm() {
-  const userId = useSearchParams().get("uid");
-  if (!userId) {
-    return <>no Uid provided</>;
-  }
-
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("uid");
   const [isLoading, startTransition] = useTransition();
 
+  // Always call useForm even if userId is not available, but we handle it later in the rendering
   const form = useForm<z.infer<typeof SignupFormSchema>>({
     resolver: zodResolver(SignupFormSchema),
     defaultValues: {
       username: "",
-      userId: userId,
+      userId: userId || "", // Provide a default empty string if userId is null
     },
   });
+
+  // Handle missing userId case
+  if (!userId) {
+    return <>No UID provided</>;
+  }
 
   function onSubmit(values: z.infer<typeof SignupFormSchema>) {
     startTransition(async () => {

@@ -34,6 +34,23 @@ export const getUserById = async (id: string) => {
   }
 };
 
+export const getUserByUsername = async (username: string) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        username,
+      },
+    });
+    if (!user) {
+      return null;
+    }
+    return user;
+  } catch (error) {
+    console.error("error", error);
+    return null;
+  }
+};
+
 export const updateUsernameById = async (id: string, username: string) => {
   try {
     const user = await db.user.update({

@@ -1,5 +1,6 @@
 import AuthHeader from "@/components/auth/AuthHeader";
 import SignupForm from "@/components/forms/auth/SignupForm";
+import { Suspense } from "react";
 
 export default function SignupPage() {
   return (
@@ -8,7 +9,9 @@ export default function SignupPage() {
         title="One last thing..."
         subtitle="How should we call you?"
       />
-      <SignupForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SignupForm />
+      </Suspense>
     </div>
   );
 }
