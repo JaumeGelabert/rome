@@ -11,7 +11,7 @@ export default function TaskMap({ tasks }: TaskMapProps) {
         <div className="flex w-full max-w-3xl flex-col items-start justify-start">
           <p className="mb-4 text-2xl font-bold text-primary">Today</p>
           {tasks.map((task) => {
-            return <div>{task.title}</div>;
+            return <div key={task.id}>{task.title}</div>;
           })}
         </div>
       ) : (
