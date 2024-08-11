@@ -33,7 +33,9 @@ export async function GET(request: Request) {
 
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${next}/today`);
+        return NextResponse.redirect(
+          `${origin}${next}/today/${userExists.username}`,
+        );
       } else if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${next}`);
       } else {
