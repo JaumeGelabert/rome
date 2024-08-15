@@ -35,3 +35,17 @@ export const getUserTasksByUsername = async (username: string) => {
     return null;
   }
 };
+
+export const getTaskByTaskId = async (taskId: string) => {
+  try {
+    const task = await db.task.findUnique({
+      where: {
+        id: taskId,
+      },
+    });
+    return task;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

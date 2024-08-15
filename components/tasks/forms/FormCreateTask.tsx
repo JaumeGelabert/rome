@@ -40,6 +40,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
+import { toast } from "sonner";
 
 export default function FormCreateTask() {
   const [links, setLinks] = useState<string[]>([]);
@@ -56,15 +57,27 @@ export default function FormCreateTask() {
     },
   });
 
-  // 2. Define a submit handler.
+  const createTaskPromise = async (
+    values: z.infer<typeof CreateTaskSchema>,
+  ) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.post("/api/v1/task", values);
+        resolve(res.data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
   function onSubmit(values: z.infer<typeof CreateTaskSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     values.links = links;
-    console.log(values);
     startTransition(async () => {
-      const res = await axios.post("/api/v1/task", values);
-      console.log(res.data);
+      toast.promise(createTaskPromise(values), {
+        loading: "Creating task...",
+        success: "Task created successfully",
+        error: "An error occurred while creating the task",
+      });
     });
   }
 
@@ -72,7 +85,6 @@ export default function FormCreateTask() {
     if (inputValue.trim()) {
       let formattedLink = inputValue.trim();
 
-      // Check if the link starts with "https://"
       if (!formattedLink.startsWith("https://")) {
         formattedLink = `https://${formattedLink}`;
       }
@@ -215,9 +227,11 @@ export default function FormCreateTask() {
                         <p className="text-sm font-medium">Task links:</p>
                         <ul className="mt-1 flex w-full flex-col items-start justify-start gap-1">
                           {links.map((link, index) => (
-                            <span className="group flex w-full flex-row items-center justify-between rounded px-2 py-[2px] text-neutral-500 transition-all hover:bg-neutral-100 hover:text-neutral-600">
+                            <span
+                              key={index}
+                              className="group flex w-full flex-row items-center justify-between rounded px-2 py-[2px] text-neutral-500 transition-all hover:bg-neutral-100 hover:text-neutral-600"
+                            >
                               <Link
-                                key={index}
                                 href={link}
                                 className="w-full text-sm"
                                 rel="noopener noreferrer"

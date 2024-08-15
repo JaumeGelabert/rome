@@ -34,7 +34,7 @@ export default async function TodayPage({ params }: TodayPageProps) {
 
   return (
     <>
-      <TaskMap tasks={tasks} />
+      <TaskMap username={username} tasks={tasks} />
     </>
   );
 }

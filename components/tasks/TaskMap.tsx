@@ -5,9 +5,10 @@ import SingleTask from "@/components/tasks/SingleTask";
 
 interface TaskMapProps {
   tasks: Task[] | null;
+  username: string;
 }
 
-export default function TaskMap({ tasks }: TaskMapProps) {
+export default function TaskMap({ tasks, username }: TaskMapProps) {
   return (
     <>
       {tasks?.length ? (
@@ -18,7 +19,9 @@ export default function TaskMap({ tasks }: TaskMapProps) {
           </span>
           <div className="flex w-full flex-col items-start justify-start gap-2">
             {tasks.map((task) => {
-              return <SingleTask key={task.id} task={task} />;
+              return (
+                <SingleTask key={task.id} task={task} username={username} />
+              );
             })}
             <CreateTask />
           </div>
