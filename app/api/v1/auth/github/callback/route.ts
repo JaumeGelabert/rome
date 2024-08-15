@@ -37,9 +37,13 @@ export async function GET(request: Request) {
           `${origin}${next}/today/${userExists.username}`,
         );
       } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
+        return NextResponse.redirect(
+          `https://${forwardedHost}${next}/today/${userExists.username}`,
+        );
       } else {
-        return NextResponse.redirect(`${origin}${next}`);
+        return NextResponse.redirect(
+          `${origin}${next}/today/${userExists.username}`,
+        );
       }
     }
   }
